@@ -8,6 +8,44 @@ function isMobileDevice() {
   return window.innerWidth <= 768;
 }
 document.addEventListener("DOMContentLoaded", () => {
+  const images = Array.from(document.querySelectorAll(".gallery-track .image-link"));
+  let gap = 20;
+  
+  // 初始化时记录尺寸
+  const imgW = 400;
+  const imgH = 250;
+  
+  const imgWidth = images[0].offsetWidth + gap;
+  const total = images.length;
+  const totalWidth = total * imgWidth;
+  let scrollX = 0;
+  const speed = 80; // 鼠标滚轮灵敏度
+  const positions = [];
+
+  // 初始化时计算并设置slider图片位置
+  function initializeSliderPositions() {
+    const mobileScale = isMobileDevice() ? 1 : 1;
+    const currentWidth = imgW * mobileScale;
+    const currentHeight = imgH * mobileScale;
+    const currentGap = isMobileDevice() ? gap * 1 : gap;
+    
+    let offsetX = (window.innerWidth - 8 * (currentWidth + currentGap)) / 2;
+    
+    images.forEach((link, i) => {
+      const x = offsetX + i * (currentWidth + currentGap);
+      positions[i] = x;
+      gsap.set(link, {
+        x: x,
+        y: isMobileDevice() ? -currentHeight * 0.1 : -currentHeight / 2,
+        width: currentWidth,
+        height: currentHeight
+      });
+    });
+  }
+
+  // 页面加载时初始化位置
+  initializeSliderPositions();
+
   // 添加窗口大小变化监听
   window.addEventListener('resize', () => {
     // 检查设备类型并更新视图
@@ -24,17 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
           ease: "power2.out"
         });
       });
+    } else if (view === 'slider') {
+      // 在slider视图下重新计算位置
+      initializeSliderPositions();
     }
   });
-  const images = Array.from(document.querySelectorAll(".gallery-track .image-link"));
-  let gap = 20;
-  const imgWidth = images[0].offsetWidth + gap;
-  const total = images.length;
-  const totalWidth = total * imgWidth;
-  let scrollX = 0;
-  const speed = 80; // 鼠标滚轮灵敏度
-  const positions = [];
-
 
   // 初始化每张图片位置，横向排列
   images.forEach((link, i) => {
@@ -188,23 +220,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  // 初始化时记录尺寸
-  const imgW = 400;
-  const imgH = 250;
-
-
   // 保存 slide 模式下的初始位置
   function getSlidePositions() {
-    const mobileScale = isMobileDevice() ? 0.7 : 1;
+    const mobileScale = isMobileDevice() ? 1 : 1;
     const currentWidth = imgW * mobileScale;
     const currentHeight = imgH * mobileScale;
-    const currentGap = isMobileDevice() ? gap * 0.7 : gap;
+    const currentGap = isMobileDevice() ? gap * 1 : gap;
     
     let offsetX = (window.innerWidth - 8 * (currentWidth + currentGap)) / 2;
     
     return images.map((_, i) => ({
       x: offsetX + i * (currentWidth + currentGap),
-      y: isMobileDevice() ? -currentHeight * 0.8 : -currentHeight / 2
+      y: isMobileDevice() ? -currentHeight * 0.1 : -currentHeight / 2
     }));
   }
   // 保存 list 模式下的目标位置
@@ -232,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const duration = animated ? 1 : 0;
     
     // 在移动设备上调整图片尺寸
-    const mobileScale = isMobileDevice() ? 0.7 : 1;
+    const mobileScale = isMobileDevice() ? 1 : 1;
     const currentWidth = imgW * mobileScale;
     const currentHeight = imgH * mobileScale;
 
