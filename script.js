@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 添加list-item悬浮事件
     addListHoverEffects();
 
-    // 改变 big-name 的样式（两边对齐、字体变小、往下对齐）
+    // 改变 big-name 的样式（两边对齐、字体变小、垂直居中）
     const bigName = document.querySelector('.big-name');
     gsap.fromTo(bigName, {
       // 获取当前状态作为起始点
@@ -344,9 +344,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }, {
       fontSize: "4vw",
       justifyContent: "space-between",  // 使用flex的space-between让两个span分别靠两边
-      alignItems: "flex-end",  // 修正：添加引号
-      padding: "2em 3em 0em",
-      y: 50,
+      alignItems: "center",  // 改为垂直居中
+      padding: "0em 3em",   // 移除顶部内边距
+      y: 0,                 // 重置垂直偏移
       duration: 0.8,
       ease: "power2.out"
     });
@@ -528,9 +528,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector('.big-name').addEventListener('click', () => {
     enablePageScroll(); // 启用页面滚动
     isAutoScrolling = true;
+    const headerHeight = 60; // header 的高度
     gsap.to(window, {
       duration: 1.5, 
-      scrollTo: '#bigName', 
+      scrollTo: {
+        y: '#bigName',
+        offsetY: headerHeight
+      },
       ease: 'power2.inOut', 
       onComplete: () => {
         isAutoScrolling = false;
@@ -603,9 +607,13 @@ document.addEventListener("DOMContentLoaded", () => {
     enablePageScroll();
     
     isAutoScrolling = true;
+    const headerHeight = 60; // header 的高度
     gsap.to(window, {
       duration: 1.5, 
-      scrollTo: '#bigName', 
+      scrollTo: {
+        y: '#bigName',
+        offsetY: headerHeight
+      },
       ease: 'power2.inOut', 
       onComplete: () => {
         isAutoScrolling = false;
