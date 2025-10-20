@@ -156,19 +156,18 @@ body {
 
 /* ABOUT SECTION */
 .about {
-  height: 100vh;
+  min-height: 100vh;
   padding: 100px 20px;
-  overflow: auto;
-  /* background: #bf7979; */
-  position: relative;  /* 添加相对定位 */
+  position: relative;
   display: flex;
   justify-content: center;
-  /* align-items: center; */ 
+  background: #fff;
 }
 
 .about-content {
   max-width: 60%;
   text-align: center;
+  padding-bottom: 60px;
 }
 
 .about-content > p {

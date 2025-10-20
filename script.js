@@ -43,46 +43,85 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.set(link, { x });
   });
 
-  window.addEventListener("wheel", (e) => {
-    if (view == "slider") {
+  // 触摸事件相关变量
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let isDragging = false;
+  let startPositions = [];
 
+  // 处理滚轮事件
+  window.addEventListener("wheel", (e) => {
+    if (view == "slider" && !isAboutVisible) {
       e.preventDefault();
       scrollX = e.deltaY > 0 ? speed : -speed;
-
-      images.forEach((link, i) => {
-        positions[i] += scrollX;
-        if (positions[i] < -1.5 * imgWidth) {
-          positions[i] += totalWidth
-          gsap.set(link, {
-            x: positions[i], onComplete: () => {
-              console.log(positions[i], i)
-            }
-          });
-          gsap.killTweensOf(link)
-        } else if (positions[i] > totalWidth - 1.5 * imgWidth) {
-          positions[i] -= totalWidth
-          gsap.set(link, {
-            x: positions[i], onComplete: () => {
-              console.log(positions[i], i)
-            }
-          });
-          console.log(i, i)
-          gsap.killTweensOf(link)
-        } else {
-          gsap.to(link, {
-            x: positions[i],
-            // opacity:0,
-            duration: 0.8,
-            ease: "power2.out",
-
-            onUpdate: () => {
-              // console.log(positions[i])
-            }
-          });
-        }
-      });
+      updateSliderPositions(scrollX);
     }
   }, { passive: false });
+
+  // 处理触摸开始事件
+  window.addEventListener("touchstart", (e) => {
+    if (view == "slider" && !isAboutVisible) {
+      touchStartX = e.touches[0].clientX;
+      isDragging = true;
+      startPositions = [...positions];
+    }
+  }, { passive: true });
+
+  // 处理触摸移动事件
+  window.addEventListener("touchmove", (e) => {
+    if (view == "slider" && isDragging && !isAboutVisible) {
+      const currentX = e.touches[0].clientX;
+      const deltaX = currentX - touchStartX;
+      const moveSpeed = deltaX * 2; // 调整滑动灵敏度
+      
+      images.forEach((link, i) => {
+        positions[i] = startPositions[i] + moveSpeed;
+        gsap.set(link, {
+          x: positions[i],
+          // duration: 0.3,
+          // ease: "power2.out"
+        });
+      });
+    }
+    updateSliderPositions(0);
+  }, { passive: true });
+
+  // 处理触摸结束事件
+  // window.addEventListener("touchend", (e) => {
+  //   if (view == "slider") {
+  //     isDragging = false;
+  //     touchEndX = e.changedTouches[0].clientX;
+  //     const deltaX = touchEndX - touchStartX;
+      
+  //     // 计算滑动速度和方向
+  //     const swipeSpeed = Math.abs(deltaX) > 50 ? (deltaX > 0 ? -speed * 2 : speed * 2) : 0;
+  //     if (swipeSpeed !== 0) {
+  //       updateSliderPositions(swipeSpeed);
+  //     }
+  //   }
+  // }, { passive: true });
+
+  // 更新滑块位置的函数
+  function updateSliderPositions(scrollAmount) {
+    images.forEach((link, i) => {
+      positions[i] += scrollAmount;
+      if (positions[i] < -1.5 * imgWidth) {
+        positions[i] += totalWidth;
+        gsap.set(link, { x: positions[i] });
+        gsap.killTweensOf(link);
+      } else if (positions[i] > totalWidth - 1.5 * imgWidth) {
+        positions[i] -= totalWidth;
+        gsap.set(link, { x: positions[i] });
+        gsap.killTweensOf(link);
+      } else {
+        gsap.set(link, {
+          x: positions[i],
+          // duration: 0.8,
+          // ease: "power2.out"
+        });
+      }
+    });
+  }
 
 
 
@@ -460,9 +499,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.querySelector('.big-name').addEventListener('click', () => {
+    enablePageScroll(); // 启用页面滚动
     isAutoScrolling = true;
     gsap.to(window, {
-      duration: 1.5, scrollTo: '#bigName', ease: 'power2.inOut', onComplete: () => {
+      duration: 1.5, 
+      scrollTo: '#bigName', 
+      ease: 'power2.inOut', 
+      onComplete: () => {
         isAutoScrolling = false;
       }
     });
@@ -493,18 +536,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 控制页面滚动状态
+  let isAboutVisible = false;
+  const bodyElement = document.body;
+  const aboutSection = document.querySelector('.about');
+  const gallerySection = document.querySelector('.gallery');
+
+  function enableSliderScroll() {
+    bodyElement.style.overflow = 'hidden';
+    aboutSection.style.display = 'none';
+    isAboutVisible = false;
+  }
+
+  function enablePageScroll() {
+    bodyElement.style.overflowY = 'auto';
+    bodyElement.style.overflowX = 'hidden';
+    aboutSection.style.display = 'flex';
+    isAboutVisible = true;
+  }
+
+  // 初始化时启用滑块滚动
+  enableSliderScroll();
+
+  // 监听页面滚动
+  window.addEventListener('scroll', () => {
+    if (isAboutVisible && window.scrollY === 0) {
+      // 如果页面在顶部且 About 页面可见，则启用滑块滚动
+      enableSliderScroll();
+    }
+  });
+
   // --- Smooth scroll to About ---
   document.querySelector('.about-btn').addEventListener('click', () => {
-
-
     // 如果在list模式下，先移动图片到最左边
     if (view === 'list') {
       moveImagesToLeft();
     }
 
+    enablePageScroll();
+    
     isAutoScrolling = true;
     gsap.to(window, {
-      duration: 1.5, scrollTo: '#bigName', ease: 'power2.inOut', onComplete: () => {
+      duration: 1.5, 
+      scrollTo: '#bigName', 
+      ease: 'power2.inOut', 
+      onComplete: () => {
         isAutoScrolling = false;
       }
     });
@@ -515,13 +591,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const homeBtn = document.querySelector("#home-btn");
   homeBtn.addEventListener("click", () => {
     isAutoScrolling = true;
+    // 先启用滑块滚动，这样动画完成前就可以滑动了
+    enableSliderScroll();
+    
     gsap.to(window, {
       duration: 1.2,
       scrollTo: { y: 0 },
       ease: "power2.inOut",
       onComplete: () => {
         hasScrolled = false;
-        isAutoScrolling = true;
+        isAutoScrolling = false; // 修正：应该是 false
       }
     });
 
