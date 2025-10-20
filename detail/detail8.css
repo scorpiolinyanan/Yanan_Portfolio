@@ -1,0 +1,135 @@
+/* Page 1: Text Left, Image Right */
+.page-1 {
+    flex-direction: row;
+}
+
+.text-column {
+    flex: 0 0 30%;
+    background: #fafafa;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.image-column {
+    flex: 1;
+    background: transparent;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Page 2: 2x2 Grid Layout */
+.page-2 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    height: 80vh;
+}
+
+/* Page 3: 3x1 Grid Layout */
+.page-3 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.grid-container-3x1 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    height: 60vh;
+}
+
+.grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 8px;
+}
+
+.grid-item .image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-item .project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Project Description Styles */
+.project-description p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-1 {
+        flex-direction: column;
+    }
+    
+    .text-column {
+        flex: none;
+        padding: 30px 20px;
+    }
+    
+    .image-column {
+        padding: 15px;
+    }
+    
+    .page-2 {
+        padding: 15px;
+    }
+    
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 15px;
+        height: auto;
+        min-height: 70vh;
+    }
+
+    .grid-container-3x1 {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+        gap: 15px;
+        height: auto;
+        min-height: 50vh;
+    }
+    
+    .grid-item {
+        padding: 5px;
+    }
+}

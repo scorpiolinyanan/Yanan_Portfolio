@@ -1,0 +1,541 @@
+// --- GSAP intro ---
+gsap.from(".header", { opacity: 0, y: -30, duration: 1 });
+// gsap.from(".gallery img", { opacity: 0, y: 40, stagger: 0.1, duration: 1.2 });
+let view = "slider"
+
+// 检查是否为移动设备
+function isMobileDevice() {
+  return window.innerWidth <= 768;
+}
+document.addEventListener("DOMContentLoaded", () => {
+  // 添加窗口大小变化监听
+  window.addEventListener('resize', () => {
+    // 检查设备类型并更新视图
+    checkDeviceAndUpdateView();
+    
+    // 如果是列表视图，更新位置
+    if (view === 'list' && !isMobileDevice()) {
+      const positions = getListPositions();
+      images.forEach((link, i) => {
+        gsap.to(link, {
+          x: positions[i].x,
+          y: positions[i].y,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+    }
+  });
+  const images = Array.from(document.querySelectorAll(".gallery-track .image-link"));
+  let gap = 20;
+  const imgWidth = images[0].offsetWidth + gap;
+  const total = images.length;
+  const totalWidth = total * imgWidth;
+  let scrollX = 0;
+  const speed = 80; // 鼠标滚轮灵敏度
+  const positions = [];
+
+
+  // 初始化每张图片位置，横向排列
+  images.forEach((link, i) => {
+    const x = i * imgWidth;
+    positions[i] = x;
+    gsap.set(link, { x });
+  });
+
+  window.addEventListener("wheel", (e) => {
+    if (view == "slider") {
+
+      e.preventDefault();
+      scrollX = e.deltaY > 0 ? speed : -speed;
+
+      images.forEach((link, i) => {
+        positions[i] += scrollX;
+        if (positions[i] < -1.5 * imgWidth) {
+          positions[i] += totalWidth
+          gsap.set(link, {
+            x: positions[i], onComplete: () => {
+              console.log(positions[i], i)
+            }
+          });
+          gsap.killTweensOf(link)
+        } else if (positions[i] > totalWidth - 1.5 * imgWidth) {
+          positions[i] -= totalWidth
+          gsap.set(link, {
+            x: positions[i], onComplete: () => {
+              console.log(positions[i], i)
+            }
+          });
+          console.log(i, i)
+          gsap.killTweensOf(link)
+        } else {
+          gsap.to(link, {
+            x: positions[i],
+            // opacity:0,
+            duration: 0.8,
+            ease: "power2.out",
+
+            onUpdate: () => {
+              // console.log(positions[i])
+            }
+          });
+        }
+      });
+    }
+  }, { passive: false });
+
+
+
+  const viewButtons = document.querySelectorAll(".view-toggle");
+  const galleryTrack = document.querySelector(".gallery-track");
+  const listView = document.getElementById('listView');
+  const listItems = listView.querySelectorAll('.list-item');
+  const listViewButton = document.querySelector('.view-toggle[data-view="list"]');
+
+  // 初始化和窗口大小改变时检查设备类型
+  function checkDeviceAndUpdateView() {
+    if (isMobileDevice()) {
+      // 在移动设备上隐藏list按钮
+      listViewButton.style.display = 'none';
+      // 如果当前是list视图，切换回slider
+      if (view === 'list') {
+        view = 'slider';
+        setSliderLayout(true);
+      }
+    } else {
+      // 在桌面设备上显示list按钮
+      listViewButton.style.display = '';
+    }
+  }
+
+  // 初始检查
+  checkDeviceAndUpdateView();
+
+  viewButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      // 先移除所有按钮的 active
+      viewButtons.forEach(b => b.classList.remove("active"));
+
+      // 给当前点击按钮加上 active
+      btn.classList.add("active");
+
+      // 可选：根据 data-view 做切换操作
+      view = btn.dataset.view;
+      console.log("当前选择视图：", view);
+      // const view = btn.dataset.view;
+
+      if (view === "slider") {
+        gap = 20
+        console.log("切换到 slider");
+        setSliderLayout();
+      } else if (view === "list") {
+        console.log("切换到 list");
+        setListLayout();
+        // 这里可以加逻辑显示 slider 或 list
+      }
+
+      isAutoScrolling = true;
+      gsap.to(window, {
+        duration: 1.2,
+        scrollTo: { y: 0 },
+        ease: "power2.inOut",
+        onComplete: () => {
+          hasScrolled = false;
+          isAutoScrolling = true;
+        }
+      });
+
+    });
+  });
+
+
+  // 初始化时记录尺寸
+  const imgW = 400;
+  const imgH = 250;
+
+
+  // 保存 slide 模式下的初始位置
+  function getSlidePositions() {
+    const mobileScale = isMobileDevice() ? 0.7 : 1;
+    const currentWidth = imgW * mobileScale;
+    const currentHeight = imgH * mobileScale;
+    const currentGap = isMobileDevice() ? gap * 0.7 : gap;
+    
+    let offsetX = (window.innerWidth - 8 * (currentWidth + currentGap)) / 2;
+    
+    return images.map((_, i) => ({
+      x: offsetX + i * (currentWidth + currentGap),
+      y: isMobileDevice() ? -currentHeight * 0.8 : -currentHeight / 2
+    }));
+  }
+  // 保存 list 模式下的目标位置
+  function getListPositions() {
+    // 计算缩放后的图片尺寸
+    const scaledWidth = imgW * 0.6;
+    const scaledHeight = imgH * 0.6;
+    
+    // 计算水平居中位置
+    const centerX = window.innerWidth / 2 - scaledWidth / 2;
+    
+    // 计算垂直方向的总高度和偏移
+    const totalHeight = images.length * (scaledHeight + gap);
+    const offsetY = (window.innerHeight - totalHeight) / 2;
+    
+    return images.map((_, i) => ({
+      x: centerX,
+      y: -window.innerHeight / 2 + i * (scaledHeight + gap) + offsetY
+    }));
+  }
+
+  // === 初始化 slide 模式 ===
+  function setSliderLayout(animated = false) {
+    const positions = getSlidePositions();
+    const duration = animated ? 1 : 0;
+    
+    // 在移动设备上调整图片尺寸
+    const mobileScale = isMobileDevice() ? 0.7 : 1;
+    const currentWidth = imgW * mobileScale;
+    const currentHeight = imgH * mobileScale;
+
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        position: "absolute",
+        width: currentWidth,
+        height: currentHeight,
+        x: positions[i].x,
+        y: positions[i].y,
+        scale: 1,
+        borderRadius: "10px",
+        duration: 0.5 + Math.abs(i - 4) / 4,
+        ease: "power2.inOut"
+      });
+    });
+
+    listItems.forEach((item, index) => {
+      item.classList.remove('visible');
+    });
+
+    listView.classList.remove('active');
+    
+    // 添加slider模式的悬浮效果
+    addSliderHoverEffects();
+
+    // 恢复 big-name 的原始状态
+    const bigName = document.querySelector('.big-name');
+    gsap.fromTo(bigName, {
+      // 获取当前状态作为起始点
+      fontSize: gsap.getProperty(bigName, "fontSize"),
+      justifyContent: gsap.getProperty(bigName, "justifyContent"),
+      alignItems: gsap.getProperty(bigName, "alignItems"),
+      padding: gsap.getProperty(bigName, "padding"),
+      y: gsap.getProperty(bigName, "y")
+    }, {
+      fontSize: "10vw",
+      justifyContent: "center",  // 恢复为居中对齐
+      alignItems: "center",
+      padding: ".2em 3em",
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+  }
+
+  // === 切换到 list 模式 ===
+  function setListLayout(animated = true) {
+    const positions = getListPositions();
+    const duration = animated ? 1 : 0;
+
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        position: "absolute",
+        width: imgW * 0.6,
+        height: imgH * 0.6,
+        x: positions[i].x,
+        y: positions[i].y,
+        borderRadius: "10px",
+        duration: 0.2 + Math.abs(i - 4) / 8,
+        ease: "power2.inOut"
+      });
+    });
+
+    listView.classList.add('active');
+    listItems.forEach((item, index) => {
+      item.classList.add('visible');
+    });
+
+    // 添加list-item悬浮事件
+    addListHoverEffects();
+
+    // 改变 big-name 的样式（两边对齐、字体变小、往下对齐）
+    const bigName = document.querySelector('.big-name');
+    gsap.fromTo(bigName, {
+      // 获取当前状态作为起始点
+      fontSize: gsap.getProperty(bigName, "fontSize"),
+      justifyContent: gsap.getProperty(bigName, "justifyContent"),
+      alignItems: gsap.getProperty(bigName, "alignItems"),
+      padding: gsap.getProperty(bigName, "padding"),
+      y: gsap.getProperty(bigName, "y")
+    }, {
+      fontSize: "4vw",
+      justifyContent: "space-between",  // 使用flex的space-between让两个span分别靠两边
+      alignItems: "flex-end",  // 修正：添加引号
+      padding: "2em 3em 0em",
+      y: 50,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+  }
+
+  // === Slider模式悬浮效果 ===
+  function addSliderHoverEffects() {
+    // 移除之前的事件监听器（如果存在）
+    images.forEach((link, index) => {
+      link.removeEventListener('mouseenter', handleSliderHover);
+      link.removeEventListener('mouseleave', handleSliderLeave);
+    });
+
+    // 添加新的事件监听器
+    images.forEach((link, index) => {
+      link.addEventListener('mouseenter', () => handleSliderHover(index));
+      link.addEventListener('mouseleave', () => handleSliderLeave(index));
+    });
+  }
+
+  function handleSliderHover(hoveredIndex) {
+    if (view !== 'slider') return;
+    
+    const currentLink = images[hoveredIndex];
+    const overlay = currentLink.querySelector('.image-overlay');
+    
+    if (overlay) {
+      gsap.to(overlay, {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  }
+
+  function handleSliderLeave(hoveredIndex) {
+    if (view !== 'slider') return;
+    
+    const currentLink = images[hoveredIndex];
+    const overlay = currentLink.querySelector('.image-overlay');
+    
+    if (overlay) {
+      gsap.to(overlay, {
+        opacity: 0,
+        y: 10,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  }
+
+  // === List模式悬浮效果 ===
+  function addListHoverEffects() {
+    // 移除之前的事件监听器（如果存在）
+    listItems.forEach((item, index) => {
+      item.removeEventListener('mouseenter', handleListHover);
+      item.removeEventListener('mouseleave', handleListLeave);
+      item.removeEventListener('click', handleListClick);
+    });
+
+    // 添加新的事件监听器
+    listItems.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => handleListHover(index));
+      item.addEventListener('mouseleave', () => handleListLeave(index));
+      item.addEventListener('click', () => handleListClick(index));
+    });
+  }
+
+  function handleListHover(hoveredIndex) {
+    if (view !== 'list') return;
+    gap = 60;
+    
+    // 计算缩放后的图片尺寸
+    const scaledHeight = imgH * 0.6;
+    
+    // 计算所有图片的新位置
+    const basePositions = getListPositions();
+    
+    // 计算悬浮时的目标Y位置（垂直居中）
+    const targetY = -scaledHeight / 2;
+    const offsetY = targetY - basePositions[hoveredIndex].y;
+
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        y: basePositions[i].y + offsetY,
+        scale: i === hoveredIndex ? 1.5 : 1.2,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+
+    // 让对应的图片居中放大
+    const centerX = window.innerHeight / 2 - (imgW * 0.6 * 1.1) / 2;
+    const centerY = - (imgH * 0.6 * 1.1) / 2;
+
+    // gsap.to(images[hoveredIndex], {
+    //   // x: centerX,
+    //   // y: centerY,
+    //   scale: 2.4,
+    //   duration: 0.6,
+    //   ease: "power2.out"
+    // });
+
+    // 触发同一行所有span的悬浮效果
+    const currentItem = listItems[hoveredIndex];
+    const spans = currentItem.querySelectorAll('span');
+    spans.forEach(span => {
+      span.classList.add('hovered');
+    });
+    console.log("handleListHover");
+  }
+
+  function handleListLeave(hoveredIndex) {
+    if (view !== 'list') return;
+    // gsap.killTweensOf("img"); 
+    gap = 20
+    // 恢复所有图片到原始位置
+    const basePositions = getListPositions();
+
+    // setTimeout(() => {
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        // x: basePositions[i].x,
+        // y: basePositions[i].y,
+        scale: 1,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+    console.log("handleListLeave");
+    // },600);
+
+    // 只对当前离开的那一行添加leaving效果
+    const currentItem = listItems[hoveredIndex];
+    const spans = currentItem.querySelectorAll('span');
+    spans.forEach(span => {
+      span.classList.remove('hovered');
+      span.classList.add('leaving');
+
+      // 动画完成后清除leaving类
+      setTimeout(() => {
+        span.classList.remove('leaving');
+      }, 300); // 与CSS transition时间一致
+    });
+
+    // 清除其他所有行的hovered状态（不添加leaving效果）
+    listItems.forEach((item, index) => {
+      if (index !== hoveredIndex) {
+        const spans = item.querySelectorAll('span');
+        spans.forEach(span => {
+          span.classList.remove('hovered');
+        });
+      }
+    });
+  }
+
+  function handleListClick(clickedIndex) {
+    if (view !== 'list') return;
+    
+    // 跳转到对应的详情页面
+    const detailPages = [
+      'detail/detail1.html',
+      'detail/detail2.html', 
+      'detail/detail3.html',
+      'detail/detail4.html',
+      'detail/detail5.html',
+      'detail/detail6.html',
+      'detail/detail7.html',
+      'detail/detail8.html',
+      'detail/detail9.html'
+    ];
+    
+    if (detailPages[clickedIndex]) {
+      window.location.href = detailPages[clickedIndex];
+    }
+  }
+
+  document.querySelector('.big-name').addEventListener('click', () => {
+    isAutoScrolling = true;
+    gsap.to(window, {
+      duration: 1.5, scrollTo: '#bigName', ease: 'power2.inOut', onComplete: () => {
+        isAutoScrolling = false;
+      }
+    });
+  });
+
+  // === 移动图片到最左边 ===
+  function moveImagesToLeft() {
+    const leftMargin = 50; // 距离左边的距离
+
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        x: - (imgW * 0.6 * 1.1),
+        // y: -window.innerHeight / 2 + i * (imgH * 0.6 + gap) + (window.innerHeight - 8 * (imgH * 0.6 + gap)) / 2,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+  }
+  // === 移动图片到最左边 ===
+  function moveImagesToCenter() {
+    images.forEach((link, i) => {
+      gsap.to(link, {
+        x: window.innerWidth / 2 - (imgW * 0.6 * 1.1) / 2,
+        // y: -window.innerHeight / 2 + i * (imgH * 0.6 + gap) + (window.innerHeight - 8 * (imgH * 0.6 + gap)) / 2,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+  }
+
+  // --- Smooth scroll to About ---
+  document.querySelector('.about-btn').addEventListener('click', () => {
+
+
+    // 如果在list模式下，先移动图片到最左边
+    if (view === 'list') {
+      moveImagesToLeft();
+    }
+
+    isAutoScrolling = true;
+    gsap.to(window, {
+      duration: 1.5, scrollTo: '#bigName', ease: 'power2.inOut', onComplete: () => {
+        isAutoScrolling = false;
+      }
+    });
+  });
+
+
+  // 点击回到顶部后允许再次触发
+  const homeBtn = document.querySelector("#home-btn");
+  homeBtn.addEventListener("click", () => {
+    isAutoScrolling = true;
+    gsap.to(window, {
+      duration: 1.2,
+      scrollTo: { y: 0 },
+      ease: "power2.inOut",
+      onComplete: () => {
+        hasScrolled = false;
+        isAutoScrolling = true;
+      }
+    });
+
+    if (view === 'list') {
+      moveImagesToCenter();
+    }
+  });
+
+
+
+});
+
+
+
+
+
+

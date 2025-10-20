@@ -1,0 +1,93 @@
+/* Page 1: Text Left, Image Right */
+.page-1 {
+    flex-direction: row;
+}
+
+.text-column {
+    flex: 0 0 30%;
+    background: #fafafa;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.image-column {
+    flex: 1;
+    background: transparent;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    max-height: 80vh;
+}
+
+/* Page 2: Full Width Image */
+.page-2 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px;
+    min-height: auto;
+    height: auto;
+}
+
+.full-width-container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.full-width-container .image-container {
+    width: 800px;
+    max-width: 100%;
+    overflow: visible;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.full-width-container .project-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+/* Project Description Styles */
+.project-description p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-1 {
+        flex-direction: column;
+    }
+    
+    .text-column {
+        flex: none;
+        padding: 30px 20px;
+    }
+    
+    .image-column {
+        padding: 15px;
+    }
+    
+    .page-2 {
+        padding: 15px;
+    }
+    
+    .full-width-container .image-container {
+        width: 100%;
+    }
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yanan Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="left">
+      <h1 class="artist-name" id="home-btn">Yanan<br><span>PORTFOLIO</span></h1>
+    </div>
+    <div class="center">
+      <button class="view-toggle active" data-view="slider">Slider</button>
+      <button class="view-toggle" data-view="list">List</button>
+    </div>
+    <div class="right">
+      <span class="about-btn">About</span>
+    </div>
+  </header>
+
+  <!-- HOME SECTION -->
+  <main class="main" id="home">
+    <section class="gallery">
+      <div class="gallery-track">
+        <!-- Slide 模式下这些 img 可见 -->
+        <a href="detail/detail1.html" class="image-link" data-name="Les Couleurs" data-time="2023">
+          <img src="imgs/project1/4.jpeg" alt="">
+          <div class="image-overlay">
+            <span class="image-name">THE
+              MYSTERIOUS
+              GARDEN
+              CHAIR</span>
+            <span class="image-time">2024</span>
+          </div>
+        </a>
+        <a href="detail/detail2.html" class="image-link" data-name="Rêves d'Été" data-time="2022">
+          <img src="imgs/project2/封面展开.jpg" alt="">
+          <div class="image-overlay">
+            <span class="image-name">STAPLE</span>
+            <span class="image-time">2024</span>
+          </div>
+        </a>
+        <a href="detail/detail3.html" class="image-link" data-name="Lumière" data-time="2021">
+          <img src="imgs/project3/1.png" alt="">
+          <div class="image-overlay">
+            <span class="image-name">FIGMA
+              COLLAB -
+              "BETTER
+              TOGETHER"</span>
+            <span class="image-time">2025</span>
+          </div>
+        </a>
+        <a href="detail/detail4.html" class="image-link" data-name="Silence" data-time="2020">
+          <img src="imgs/project4/29.jpg" alt="">
+          <div class="image-overlay">
+            <span class="image-name">NVSHU</span>
+            <span class="image-time">2025</span>
+          </div>
+        </a>
+        <a href="detail/detail5.html" class="image-link" data-name="Tempête" data-time="2023">
+          <img src="imgs/project5/2-3.png" alt="">
+          <div class="image-overlay">
+            <span class="image-name">DECODED:
+              HUMAN & AI</span>
+            <span class="image-time">2025</span>
+          </div>
+        </a>
+        <a href="detail/detail6.html" class="image-link" data-name="Reflet" data-time="2021">
+          <img src="imgs/project6/IMG_4849.jpg" alt="">
+          <div class="image-overlay">
+            <span class="image-name">JELLYFISH
+              LIFE
+              CYCLE</span>
+            <span class="image-time">2025</span>
+          </div>
+        </a>
+        <a href="detail/detail7.html" class="image-link" data-name="Ombre" data-time="2020">
+          <img src="imgs/project7/mockup-03 1.jpg" alt="">
+          <div class="image-overlay">
+            <span class="image-name">BOOK
+              COVER</span>
+            <span class="image-time">2023</span>
+          </div>
+        </a>
+        <a href="detail/detail8.html" class="image-link" data-name="Éclat" data-time="2022">
+          <img src="imgs/project8/垃圾袋包装.png" alt="">
+          <div class="image-overlay">
+            <span class="image-name">MYCOSEA
+              BAGS</span>
+            <span class="image-time">2025</span>
+          </div>
+        </a>
+        <a href="detail/detail9.html" class="image-link" data-name="Éclat" data-time="2022">
+          <img src="imgs/project9/Snipaste_2025-10-20_17-29-08.png" alt="">
+          <div class="image-overlay">
+            <span class="image-name">CLIMATE
+              CHANGE
+              WARNING</span>
+            <span class="image-time">2024</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- List 模式 -->
+      <div id="listView" class="list-view">
+        <div class="list-header">
+          <div>No.</div>
+          <div>Project Name</div>
+          <div>Year</div>
+          <div>Category</div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">01</span></div>
+          <div><span class="text-wrapper">THE MYSTERIOUS GARDEN CHAIR</span></div>
+          <div><span class="text-wrapper">2024</span></div>
+          <div><span class="text-wrapper">Interactive
+            exhibition
+            design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">02</span></div>
+          <div><span class="text-wrapper">STAPLE</span></div>
+          <div><span class="text-wrapper">2024</span></div>
+          <div><span class="text-wrapper">Magazine
+            design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">03</span></div>
+          <div><span class="text-wrapper">FIGMA COLLAB - "BETTER TOGETHER"</span></div>
+          <div><span class="text-wrapper">2025</span></div>
+          <div><span class="text-wrapper">Brand
+            Experience
+            Design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">04</span></div>
+          <div><span class="text-wrapper">NVSHU</span></div>
+          <div><span class="text-wrapper">2025</span></div>
+          <div><span class="text-wrapper">Publication
+            Design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">05</span></div>
+          <div><span class="text-wrapper">DECODED: HUMAN & AI</span></div>
+          <div><span class="text-wrapper">2025</span></div>
+          <div><span class="text-wrapper">Experimental
+            Design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">06</span></div>
+          <div><span class="text-wrapper">JELLYFISH LIFE CYCLE</span></div>
+          <div><span class="text-wrapper">2025</span></div>
+          <div><span class="text-wrapper">Motion
+            Design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">07</span></div>
+          <div><span class="text-wrapper">BOOK COVER</span></div>
+          <div><span class="text-wrapper">2023</span></div>
+          <div><span class="text-wrapper">Books cover
+            design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">08</span></div>
+          <div><span class="text-wrapper">MYCOSEA BAGS</span></div>
+          <div><span class="text-wrapper">2025</span></div>
+          <div><span class="text-wrapper">Bags
+            Design</span></div>
+        </div>
+        <div class="list-item">
+          <div><span class="text-wrapper">09</span></div>
+          <div><span class="text-wrapper">CLIMATE CHANGE WARNING</span></div>
+          <div><span class="text-wrapper">2024</span></div>
+          <div><span class="text-wrapper">Graphic
+            Narrative
+            Design</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="bottom-title">
+    <h1 id="bigName" class="big-name">
+      <span>Yanan</span>
+      <span>&nbsp;LIN</span>
+    </h1>
+  </div>
+
+  <!-- ABOUT SECTION -->
+
+  <section id="about" class="about">
+   
+      <div class="about-content">
+        <h2>ABOUT THE ARTIST</h2>
+        <p>I'm Yanan Lin. I graduated from the University of 
+          Technology Sydney (UTS) in Visual Communication 
+          degree. I am focus on areas like brand visual identity systems, graphic design and magazine layout.I 
+          have a deep understanding of visual expression and 
+          interactive approaches in brand communication. I 
+          always think creatively with the user at the core and 
+          strive to convey the brand concept while paying attention to visual aesthetics.</p>
+        
+        <div class="info-section">
+          <h3>EDUCATION</h3>
+          <div class="education-item">
+            <span class="year">2023-2025</span>
+            <div class="education-details">
+              <p>Bachelor of Design in Visual Communication University of <br/>Technology Sydney (UTS)</p>
+              <!-- <p></p> -->
+            </div>
+          </div>
+          <div class="education-item">
+            <span class="year">2020-2023</span>
+            <div class="education-details">
+              <p>Qingdao Grand High School (Shandong, China)</p>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="info-section">
+          <h3>SKILLS</h3>
+          <div class="skills-grid">
+            <span>Photoshop</span>
+            <span>Illustrator</span>
+            <span>Indesign</span>
+            <span>After Effects</span>
+            <span>Figma</span>
+            <span>P5js</span>
+            <span>HTML</span>
+            <span>Procreate</span>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

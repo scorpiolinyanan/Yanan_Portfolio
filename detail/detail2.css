@@ -1,0 +1,87 @@
+/* Page 1: Text Left, Image Right */
+.page-1 {
+    flex-direction: row;
+}
+
+.text-column {
+    flex: 0 0 30%;
+    background: #fafafa;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.image-column {
+    flex: 1;
+    background: #fafafa;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Page 2 & 3: Two Column Layout */
+.page-2,
+.page-3 {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.page-2 .image-column,
+.page-3 .image-column {
+    flex: 1;
+    background: #fafafa;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.page-2 .image-container,
+.page-3 .image-container {
+    width: 100%;
+    height: 85vh;
+    min-height: 600px;
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-1 {
+        flex-direction: column;
+    }
+    
+    .text-column {
+        flex: none;
+        padding: 30px 20px;
+    }
+    
+    .image-column {
+        padding: 15px;
+    }
+    
+    .page-2,
+    .page-3 {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .page-2 .image-container,
+    .page-3 .image-container {
+        height: 60vh;
+        min-height: 400px;
+    }
+}

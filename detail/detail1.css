@@ -1,0 +1,141 @@
+/* Page 1: Text Left, Image Right */
+.page-1 {
+    flex-direction: row;
+     background: #fafafa;
+}
+
+.text-column {
+    flex: 0 0 30%;
+    /* background: #fafafa; */
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.image-column {
+    flex: 1;
+    /* background: #fafafa; */
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Page 2: Two Column Layout (Text - Grid) */
+.page-2 {
+    display: flex;
+    flex-direction: row;
+     background: #fafafa;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    align-items: center;
+}
+
+.page-2 .text-column {
+    flex: 0 0 30%;
+    /* background: #fafafa; */
+    padding: 40px;
+    align-items: flex-start;
+  
+    text-align: left;
+    text-align: center;
+}
+
+.page-2 .content-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #fafafa;
+}
+
+.page-2 .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    height: 80vh;
+    max-width: 1000px;
+}
+
+.page-2 .grid-item {
+    /* background: #fafafa; */
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4/3;
+}
+
+.page-2 .grid-item .image-container,
+.page-2 .grid-item .project-iframe {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-2 .grid-item .project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.page-2 .grid-item .project-iframe iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-1 {
+        flex-direction: column;
+    }
+    
+    .text-column {
+        flex: none;
+        padding: 30px 20px;
+    }
+    
+    .image-column {
+        padding: 15px;
+    }
+    
+    .page-2 {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .page-2 .text-column {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .page-2 .content-column {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .page-2 .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 15px;
+        aspect-ratio: auto;
+    }
+    
+    .page-2 .grid-item {
+        aspect-ratio: 4/3;
+    }
+}

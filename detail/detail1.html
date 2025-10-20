@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1 - YANAN LIN DESIGN PORTFOLIO</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="detail.css">
+    <link rel="stylesheet" href="detail1.css">
+</head>
+<body class="detail1-page">
+    <!-- Header -->
+    <header class="detail-header">
+        <div class="header-left">
+            <h1>YANAN LIN DESIGN PORTFOLIO</h1>
+        </div>
+        <div class="header-right">
+            <h2>PROJECT 1</h2>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="detail-main">
+        <!-- Page 1: Text Left, Image Right -->
+        <div class="page page-1 active">
+            <div class="text-column">
+                <div class="project-title">
+                    <h1>THE<br>MYSTERIOUS<br>GARDEN<br>CHAIR</h1>
+                </div>
+                
+                <div class="project-subtitle">
+                    <p>(Interactive<br>exhibition<br>design)<br>Process story</p>
+                </div>
+                
+                <div class="project-description">
+                    <p>Mysterious Garden Chair is an interactive exhibition at Powerhouse, featuring a cast-iron garden chair designed by Christopher Dresser in 1870. Using P5js to create a jigsaw puzzle game with patterns hidden behind the chairs, utilizing spatial screens, and providing shared experiences for designers and learners to understand the carved pattern elements and historical background of the mid-Victorian garden chair.</p>
+                </div>
+            </div>
+
+            <div class="image-column">
+                <div class="image-container">
+                    <img src="../imgs/project1/4.jpeg" alt="Interactive exhibition setup 1" class="project-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Two Column Layout (Text - Grid) -->
+        <div class="page page-2">
+            <div class="text-column">
+                <div class="project-section" style="padding: 20px; margin-bottom: 20px;">
+                    <h3>Design Process</h3>
+                    <p>The interactive experience was designed to engage visitors through a digital jigsaw puzzle that reveals the intricate patterns of the Victorian garden chair. The spatial arrangement creates an immersive environment where users can explore the historical context through modern technology.</p>
+                </div>
+                    <div class="project-section" style="padding: 20px; margin-bottom: 20px;">
+                    <h3>Technical Implementation</h3>
+                    <p>Using P5js framework, the interactive puzzle game was developed to showcase the chair's decorative elements. The spatial screens provide a shared experience, allowing multiple users to collaborate in solving the puzzle while learning about Victorian design principles.</p>
+                </div>
+            </div>
+
+            <div class="content-column">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <div class="image-container">
+                            <img src="../imgs/project1/2.JPG" alt="Interactive exhibition setup 1" class="project-image">
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="image-container">
+                            <img src="../imgs/project1/4.jpeg" alt="Interactive exhibition setup 3" class="project-image">
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="image-container">
+                            <img src="../imgs/project1/3.png" alt="Interactive exhibition setup 2" class="project-image">
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="project-iframe">
+                            <iframe src="https://editor.p5js.org/yananlin/full/NWNLa_XhV"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+    </main>
+
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img src="" alt="" class="modal-image" id="modalImage">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="detail-nav">
+        <a href="../index.html" class="back-btn">← Back to Portfolio</a>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="detail.js"></script>
+</body>
+</html>
