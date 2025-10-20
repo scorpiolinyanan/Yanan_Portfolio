@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const total = images.length;
   const totalWidth = total * imgWidth;
   let scrollX = 0;
-  const speed = 80; // 鼠标滚轮灵敏度
+  const speed = 120; // 鼠标滚轮灵敏度
   const positions = [];
 
   // 初始化时计算并设置slider图片位置
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     }
-    updateSliderPositions(0);
+    updateSliderPositionsTouch(0);
   }, { passive: true });
 
   // 处理触摸结束事件
@@ -133,8 +133,28 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // }, { passive: true });
 
-  // 更新滑块位置的函数
+  // 更新滑块位置的函数\
   function updateSliderPositions(scrollAmount) {
+    images.forEach((link, i) => {
+      positions[i] += scrollAmount;
+      if (positions[i] < -1.5 * imgWidth) {
+        positions[i] += totalWidth;
+        gsap.set(link, { x: positions[i] });
+        gsap.killTweensOf(link);
+      } else if (positions[i] > totalWidth - 1.5 * imgWidth) {
+        positions[i] -= totalWidth;
+        gsap.set(link, { x: positions[i] });
+        gsap.killTweensOf(link);
+      } else {
+        gsap.to(link, {
+          x: positions[i],
+          duration: 1.3,
+          ease: "power2.Out"
+        });
+      }
+    });
+  }
+  function updateSliderPositionsTouch(scrollAmount) {
     images.forEach((link, i) => {
       positions[i] += scrollAmount;
       if (positions[i] < -1.5 * imgWidth) {
